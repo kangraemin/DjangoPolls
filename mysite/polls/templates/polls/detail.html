@@ -1,0 +1,27 @@
+<!--{{ question }}-->
+
+<h1>{{ question.question_text }}</h1>
+
+{% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method = "post">
+    <!--사이트간 요청 위조 ( CSRF ) 태그를 내부 url을 향하는 post폼에 사용하면 방지 할 수 있음 -->
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+        <!--value 값 = 선택한 항목의 id 값 -->
+        <!--서버측에서 변경 : Post 로 보내는 것이 권장사항 -->
+        <input type = "radio" name ="choice" id = "choice{{ forloop.counter }}" value ="{{ choice.id }}" />
+        <label for = "choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+    {% endfor %}
+    <input type="submit" value="Vote" />
+</form>
+
+<ul>
+    {% for choice in question.choice_set.all %}
+        <li>{{ choice.choice_text }}</li>
+    {% endfor %}
+</ul>
+
+<!--<h1>{{ question.question_text }}</h1>-->

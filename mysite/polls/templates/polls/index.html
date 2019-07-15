@@ -1,0 +1,19 @@
+{% load static %}
+
+<!-- static 태그는 정적파일의 절대적 url 생성 -->
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+
+{% if latest_question_list %}
+    <ul>
+        {% for question in latest_question_list %}
+            <!--하드코딩된 url 없애기 -->
+            <!--만약 주소 바꾸고싶다면 template에서 바꾸는 것이 아닌 polls/urls.py에서 수정 -->
+            <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+
+            <!--하드코딩된 url 존재 -->
+            <!--<li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>-->
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
